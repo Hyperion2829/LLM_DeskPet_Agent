@@ -5,7 +5,7 @@ from tqdm import tqdm
 from openai import OpenAI
 
 client = OpenAI(
-    api_key="sk-e3fa02093040436381bba733c0d33b0d", # 替换你的API KEY
+    api_key="", # 替换你的API KEY
     base_url="https://api.deepseek.com"
 )
 

@@ -7,7 +7,7 @@ import random
 from tqdm import tqdm 
 
 client = OpenAI(
-    api_key="sk-e3fa02093040436381bba733c0d33b0d",
+    api_key="",
     base_url="https://api.deepseek.com"
 )
 

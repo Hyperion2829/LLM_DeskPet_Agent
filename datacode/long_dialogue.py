@@ -6,7 +6,7 @@ from openai import OpenAI
 
 # ================= 配置 =================
 client = OpenAI(
-    api_key="sk-e3fa02093040436381bba733c0d33b0d",  # 建议实际使用时从环境变量读取
+    api_key="",  # 建议实际使用时从环境变量读取
     base_url="https://api.deepseek.com"
 )
 
