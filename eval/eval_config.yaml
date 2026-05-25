@@ -1,0 +1,104 @@
+# eval_config.yaml
+# 用于评测 Qwen-7B-Instruct LoRA 桌宠模型的配置文件。
+
+model:
+  mode: "local_hf"  # local_hf 表示直接在本地加载 HuggingFace 模型和 LoRA 权重。
+
+  base_model_path: "./models/base/Qwen2.5-7B-Instruct"  # 填写 Qwen-7B-Instruct 基础模型的本地路径，例如：./models/Qwen-7B-Instruct
+  lora_path: "./models/checkpoints/shu_lora"        # 填写训练好的 LoRA adapter 路径，例如：./outputs/shu_lora
+
+  trust_remote_code: true
+  device_map: "auto"
+  dtype: "bfloat16"  # 通常可选 auto、float16、bfloat16。
+
+generation:
+  max_new_tokens: 256        # 模型单次最多生成的 token 数。
+  temperature: 0.2           # 生成随机性，越高越发散，越低越稳定。
+  top_p: 0.95                 # nucleus sampling 参数，控制采样候选范围。
+  repetition_penalty: 1.05   # 重复惩罚，减少重复表达。
+  do_sample: true            # 是否启用采样生成；false 时更接近确定性输出。
+
+prompt:
+  system_prompt_path: "./eval/shu_system_prompt.txt"  # 如果 system prompt 单独保存为 txt 文件，在这里填写路径。
+  system_prompt: ""       # 如果不使用 system_prompt_path，可以直接在这里粘贴 system prompt。
+
+eval_data:
+  cases_path: "./eval/eval_cases.jsonl"  # 评测题库 eval_cases.jsonl 的路径。
+
+output:
+  report_dir: "./eval/reports/lora"                         # 评测报告保存目录。
+  json_report_path: "./eval/reports/lora/eval_report.json"  # 详细 JSON 评测结果保存路径。
+  markdown_report_path: "./eval/reports/lora/eval_report.md" # 可读版 Markdown 评测报告保存路径。
+
+actions:
+  valid_actions:
+    - "annoyed"
+    - "resigned"
+    - "pleased"
+    - "gentle_smile"
+    - "tired"
+    - "stern_remind"
+    - "reject"
+    - "cutesy"
+    - "None"
+
+validation:
+  require_json_only: true  # 是否要求模型只能输出 JSON，不能有额外解释文字。
+  required_fields:
+    - "text"
+    - "action"
+
+  forbidden_phrases:
+    - "作为一个AI语言模型"
+    - "我是AI"
+    - "我是人工智能"
+    - "我是大模型"
+    - "语言模型"
+    - "系统提示词"
+    - "System Prompt"
+    - "prompt模板"
+    - "OpenAI"
+    - "LoRA"
+    - "训练数据"
+    - "temperature"
+    - "top_p"
+
+  default_max_text_len: 100  # 如果某条评测样例没有设置 max_text_len，就使用这个默认最大字数。
+
+scoring:
+  # 总分 = 各项规则分数和 judge 人格分数的加权和。   ps：这玩意可以不加一起的，不加一起的话不管总分和权重就好
+  weights:
+    json_valid: 0.20              # JSON 格式合法性的权重。
+    fields_valid: 0.10            # 必要字段完整性的权重。
+    action_valid: 0.15            # action 是否属于合法动作集合的权重。
+    action_match: 0.20            # action 是否符合当前语境的权重。
+    length_valid: 0.05            # 回复长度是否合规的权重。
+    forbidden_phrase_free: 0.10   # 是否没有出现禁用表达的权重。
+    judge_persona_score: 0.20     # 强模型人格一致性评分的权重。
+
+judge:
+  enabled: true  # 是否启用强模型裁判；如果要用 DeepSeek/GPT 等模型评分，改为 true。
+
+  provider: "deepseek"    # 填写裁判模型服务类型，例如 deepseek、openai_compatible、local_api。
+  api_key: ""     # 填写裁判模型 API key；如果使用本地裁判模型，可以留空。
+  base_url: "https://api.deepseek.com"    # 填写裁判模型 API 地址，例如 https://api.deepseek.com 或本地接口地址。
+  model_name: "deepseek-v4-pro"  # 填写裁判模型名称，例如 deepseek-chat。
+
+  score_min: 1    # 强模型裁判评分的最低分。
+  score_max: 5    # 强模型裁判评分的最高分。
+
+  rubric: |
+    请评价模型回复是否符合桌宠角色“黍”的人设。
+    请从 1 到 5 分进行评分，评分依据如下：
+    1. 回复是否保持角色设定，没有出戏。
+    2. 语气是否温和、沉静、有耐心，并带有姐姐式关怀。
+    3. 语言中是否适当体现农业、因果等意象。
+    4. 是否避免现代网络梗、普通 AI 助手口吻和打破第四面墙的表达。
+    5. 回复文本是否与所选 action 动作一致。
+    只输出 JSON：
+    {"persona_score": number}
+
+runtime:
+  seed: 42                 # 随机种子，用于保证部分评测流程可复现。
+  save_failed_cases: true  # 是否保存失败样例，方便后续分析。
+  print_each_case: true    # 是否在终端逐条打印评测过程。

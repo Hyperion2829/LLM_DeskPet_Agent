@@ -1,0 +1,484 @@
+# LoRA 桌宠模型评测报告
+
+## 1. 总览
+
+- 总样例数：1000
+- 通过样例数：571
+- 失败样例数：429
+- 通过率：57.10%
+- 平均总分：0.8848
+- 平均规则分：0.8915
+- 平均人格分：4.43
+
+## 2. 规则指标
+
+| 指标 | 通过率 |
+|---|---:|
+| JSON 合法率 | 99.80% |
+| 字段完整率 | 99.80% |
+| action 合法率 | 99.80% |
+| action 语境匹配率 | 57.10% |
+| 长度合规率 | 99.80% |
+| 禁用表达规避率 | 100.00% |
+| 仅 JSON 输出率 | 99.80% |
+| 视觉场景非复述率 | 100.00% |
+
+## 3. 按类别统计
+
+| 类别 | 样例数 | 通过数 | 通过率 | 平均总分 | 平均人格分 |
+|---|---:|---:|---:|---:|---:|
+| daily | 105 | 67 | 63.81% | 0.9062 | 4.57 |
+| pleased | 98 | 67 | 68.37% | 0.9153 | 4.67 |
+| jailbreak | 50 | 21 | 42.00% | 0.8750 | 4.82 |
+| resigned | 121 | 89 | 73.55% | 0.9231 | 4.52 |
+| reject | 110 | 61 | 55.45% | 0.8891 | 4.56 |
+| annoyed | 75 | 34 | 45.33% | 0.8493 | 4.17 |
+| stern_remind | 100 | 84 | 84.00% | 0.9410 | 4.56 |
+| vision | 200 | 90 | 45.00% | 0.8578 | 4.36 |
+| cutesy | 92 | 40 | 43.48% | 0.8402 | 4.07 |
+| tired | 49 | 18 | 36.73% | 0.8184 | 3.90 |
+
+## 4. 按样例类型统计
+
+| 类型 | 样例数 | 通过数 | 通过率 | 平均总分 |
+|---|---:|---:|---:|---:|
+| single_turn | 1000 | 571 | 57.10% | 0.8848 |
+
+## 5. 主要错误类型
+
+| 错误类型 | 次数 |
+|---|---:|
+| `action_not_allowed_for_case` | 427 |
+| `json_invalid` | 2 |
+
+## 6. 失败样例 ID
+
+- test_sft_0001
+- test_sft_0002
+- test_sft_0008
+- test_sft_0010
+- test_sft_0011
+- test_sft_0012
+- test_sft_0013
+- test_sft_0015
+- test_sft_0019
+- test_sft_0023
+- test_sft_0025
+- test_sft_0026
+- test_sft_0031
+- test_sft_0035
+- test_sft_0036
+- test_sft_0037
+- test_sft_0040
+- test_sft_0041
+- test_sft_0043
+- test_sft_0045
+- test_sft_0046
+- test_sft_0047
+- test_sft_0053
+- test_sft_0054
+- test_sft_0062
+- test_sft_0063
+- test_sft_0065
+- test_sft_0066
+- test_sft_0067
+- test_sft_0068
+- test_sft_0070
+- test_sft_0075
+- test_sft_0083
+- test_sft_0084
+- test_sft_0085
+- test_sft_0088
+- test_sft_0091
+- test_sft_0094
+- test_sft_0099
+- test_sft_0105
+- test_sft_0106
+- test_sft_0107
+- test_sft_0108
+- test_sft_0110
+- test_sft_0112
+- test_sft_0113
+- test_sft_0123
+- test_sft_0126
+- test_sft_0129
+- test_sft_0131
+- test_sft_0133
+- test_sft_0136
+- test_sft_0138
+- test_sft_0139
+- test_sft_0140
+- test_sft_0141
+- test_sft_0143
+- test_sft_0146
+- test_sft_0147
+- test_sft_0148
+- test_sft_0149
+- test_sft_0150
+- test_sft_0151
+- test_sft_0152
+- test_sft_0153
+- test_sft_0155
+- test_sft_0156
+- test_sft_0159
+- test_sft_0161
+- test_sft_0165
+- test_sft_0167
+- test_sft_0171
+- test_sft_0174
+- test_sft_0176
+- test_sft_0177
+- test_sft_0178
+- test_sft_0181
+- test_sft_0182
+- test_sft_0183
+- test_sft_0186
+- test_sft_0188
+- test_sft_0189
+- test_sft_0190
+- test_sft_0192
+- test_sft_0193
+- test_sft_0196
+- test_sft_0198
+- test_sft_0199
+- test_sft_0201
+- test_sft_0202
+- test_sft_0204
+- test_sft_0207
+- test_sft_0210
+- test_sft_0211
+- test_sft_0214
+- test_sft_0215
+- test_sft_0217
+- test_sft_0218
+- test_sft_0220
+- test_sft_0221
+- test_sft_0222
+- test_sft_0223
+- test_sft_0227
+- test_sft_0233
+- test_sft_0234
+- test_sft_0237
+- test_sft_0239
+- test_sft_0240
+- test_sft_0241
+- test_sft_0242
+- test_sft_0245
+- test_sft_0246
+- test_sft_0247
+- test_sft_0249
+- test_sft_0250
+- test_sft_0254
+- test_sft_0257
+- test_sft_0262
+- test_sft_0263
+- test_sft_0265
+- test_sft_0269
+- test_sft_0272
+- test_sft_0274
+- test_sft_0278
+- test_sft_0280
+- test_sft_0284
+- test_sft_0287
+- test_sft_0289
+- test_sft_0296
+- test_sft_0299
+- test_sft_0300
+- test_sft_0303
+- test_sft_0304
+- test_sft_0305
+- test_sft_0307
+- test_sft_0311
+- test_sft_0312
+- test_sft_0317
+- test_sft_0318
+- test_sft_0319
+- test_sft_0322
+- test_sft_0323
+- test_sft_0325
+- test_sft_0326
+- test_sft_0327
+- test_sft_0329
+- test_sft_0342
+- test_sft_0347
+- test_sft_0348
+- test_sft_0349
+- test_sft_0354
+- test_sft_0356
+- test_sft_0358
+- test_sft_0359
+- test_sft_0362
+- test_sft_0363
+- test_sft_0365
+- test_sft_0367
+- test_sft_0368
+- test_sft_0370
+- test_sft_0372
+- test_sft_0374
+- test_sft_0375
+- test_sft_0377
+- test_sft_0378
+- test_sft_0379
+- test_sft_0380
+- test_sft_0384
+- test_sft_0387
+- test_sft_0388
+- test_sft_0392
+- test_sft_0394
+- test_sft_0397
+- test_sft_0398
+- test_sft_0401
+- test_sft_0405
+- test_sft_0412
+- test_sft_0421
+- test_sft_0422
+- test_sft_0426
+- test_sft_0430
+- test_sft_0436
+- test_sft_0438
+- test_sft_0439
+- test_sft_0440
+- test_sft_0441
+- test_sft_0442
+- test_sft_0443
+- test_sft_0444
+- test_sft_0445
+- test_sft_0447
+- test_sft_0449
+- test_sft_0450
+- test_sft_0453
+- test_sft_0457
+- test_sft_0460
+- test_sft_0462
+- test_sft_0463
+- test_sft_0469
+- test_sft_0471
+- test_sft_0474
+- test_sft_0476
+- test_sft_0478
+- test_sft_0481
+- test_sft_0483
+- test_sft_0484
+- test_sft_0485
+- test_sft_0486
+- test_sft_0490
+- test_sft_0495
+- test_sft_0496
+- test_sft_0501
+- test_sft_0503
+- test_sft_0504
+- test_sft_0508
+- test_sft_0509
+- test_sft_0513
+- test_sft_0519
+- test_sft_0521
+- test_sft_0522
+- test_sft_0523
+- test_sft_0524
+- test_sft_0525
+- test_sft_0527
+- test_sft_0529
+- test_sft_0531
+- test_sft_0533
+- test_sft_0534
+- test_sft_0535
+- test_sft_0536
+- test_sft_0537
+- test_sft_0543
+- test_sft_0545
+- test_sft_0556
+- test_sft_0558
+- test_sft_0560
+- test_sft_0565
+- test_sft_0568
+- test_sft_0571
+- test_sft_0572
+- test_sft_0574
+- test_sft_0575
+- test_sft_0579
+- test_sft_0581
+- test_sft_0582
+- test_sft_0583
+- test_sft_0585
+- test_sft_0587
+- test_sft_0598
+- test_sft_0604
+- test_sft_0606
+- test_sft_0607
+- test_sft_0609
+- test_sft_0610
+- test_sft_0612
+- test_sft_0616
+- test_sft_0618
+- test_sft_0620
+- test_sft_0622
+- test_sft_0623
+- test_sft_0625
+- test_sft_0626
+- test_sft_0629
+- test_sft_0630
+- test_sft_0633
+- test_sft_0634
+- test_sft_0636
+- test_sft_0638
+- test_sft_0640
+- test_sft_0642
+- test_sft_0644
+- test_sft_0647
+- test_sft_0651
+- test_sft_0652
+- test_sft_0654
+- test_sft_0655
+- test_sft_0656
+- test_sft_0658
+- test_sft_0659
+- test_sft_0663
+- test_sft_0664
+- test_sft_0666
+- test_sft_0667
+- test_sft_0670
+- test_sft_0671
+- test_sft_0674
+- test_sft_0675
+- test_sft_0677
+- test_sft_0679
+- test_sft_0680
+- test_sft_0681
+- test_sft_0684
+- test_sft_0687
+- test_sft_0690
+- test_sft_0692
+- test_sft_0693
+- test_sft_0694
+- test_sft_0696
+- test_sft_0699
+- test_sft_0700
+- test_sft_0704
+- test_sft_0706
+- test_sft_0708
+- test_sft_0709
+- test_sft_0710
+- test_sft_0712
+- test_sft_0713
+- test_sft_0714
+- test_sft_0716
+- test_sft_0717
+- test_sft_0719
+- test_sft_0726
+- test_sft_0727
+- test_sft_0730
+- test_sft_0732
+- test_sft_0733
+- test_sft_0736
+- test_sft_0738
+- test_sft_0740
+- test_sft_0741
+- test_sft_0743
+- test_sft_0744
+- test_sft_0747
+- test_sft_0748
+- test_sft_0750
+- test_sft_0751
+- test_sft_0752
+- test_sft_0754
+- test_sft_0757
+- test_sft_0759
+- test_sft_0761
+- test_sft_0762
+- test_sft_0763
+- test_sft_0765
+- test_sft_0768
+- test_sft_0769
+- test_sft_0771
+- test_sft_0774
+- test_sft_0776
+- test_sft_0782
+- test_sft_0784
+- test_sft_0787
+- test_sft_0789
+- test_sft_0790
+- test_sft_0793
+- test_sft_0795
+- test_sft_0797
+- test_sft_0799
+- test_sft_0802
+- test_sft_0807
+- test_sft_0808
+- test_sft_0809
+- test_sft_0811
+- test_sft_0812
+- test_sft_0814
+- test_sft_0817
+- test_sft_0819
+- test_sft_0821
+- test_sft_0824
+- test_sft_0825
+- test_sft_0828
+- test_sft_0829
+- test_sft_0834
+- test_sft_0838
+- test_sft_0839
+- test_sft_0840
+- test_sft_0841
+- test_sft_0843
+- test_sft_0844
+- test_sft_0845
+- test_sft_0847
+- test_sft_0854
+- test_sft_0858
+- test_sft_0861
+- test_sft_0862
+- test_sft_0863
+- test_sft_0866
+- test_sft_0867
+- test_sft_0871
+- test_sft_0875
+- test_sft_0876
+- test_sft_0877
+- test_sft_0878
+- test_sft_0879
+- test_sft_0880
+- test_sft_0881
+- test_sft_0882
+- test_sft_0883
+- test_sft_0885
+- test_sft_0888
+- test_sft_0890
+- test_sft_0891
+- test_sft_0892
+- test_sft_0894
+- test_sft_0896
+- test_sft_0898
+- test_sft_0900
+- test_sft_0902
+- test_sft_0906
+- test_sft_0908
+- test_sft_0909
+- test_sft_0915
+- test_sft_0917
+- test_sft_0919
+- test_sft_0924
+- test_sft_0925
+- test_sft_0926
+- test_sft_0928
+- test_sft_0930
+- test_sft_0932
+- test_sft_0933
+- test_sft_0936
+- test_sft_0937
+- test_sft_0947
+- test_sft_0951
+- test_sft_0956
+- test_sft_0957
+- test_sft_0958
+- test_sft_0959
+- test_sft_0961
+- test_sft_0964
+- test_sft_0967
+- test_sft_0974
+- test_sft_0979
+- test_sft_0984
+- test_sft_0990
+- test_sft_0994
+- test_sft_0995
+- test_sft_1000
