@@ -12,4 +12,4 @@ export CUDA_VISIBLE_DEVICES=1  # 请根据 nvidia-smi 确认显卡编号
 
 # --- 3. 启动训练 ---
 # 直接在根目录运行即可
-llamafactory-cli train configs/test_lora.yaml
+llamafactory-cli train configs/shu_sft.yaml
