@@ -34,7 +34,7 @@
 # LLM 配置（必需，否则无法对话）
 DEEPSEEK_API_KEY=sk-你的key
 
-# DeepSeek 官方 API 地址，一般不用改
+# 官方 API 地址，一般不用改
 DEEPSEEK_BASE_URL=https://api.deepseek.com
 
 # 视觉模型配置（可选，不填请禁用视觉感知）
@@ -51,32 +51,63 @@ DASHSCOPE_BASE_URL=https://dashscope.aliyuncs.com/compatible-mode/v1
 
 DashScope（通义千问）的模型有免费试用额度。
 
-### 3. 编辑 config.json（可选）
+### 3. 使用本地模型（可选）
+
+如果你有本地部署的 LLM（如 Ollama、vLLM、LM Studio 等），只要它兼容 OpenAI API 格式（`/v1/chat/completions`），就可以直接接入。
+
+**修改 `.env`**：
+
+```ini
+# 本地模型一般不需要真实 Key，填一个占位即可
+DEEPSEEK_API_KEY=sk-no-key-required
+
+# 指向本地服务地址（根据你使用的框架修改）
+DEEPSEEK_BASE_URL=http://127.0.0.1:11434/v1
+```
+
+**修改 `config.json`**：
+
+```json
+{
+  "api": {
+    "llm_model": "你的模型名",
+    "timeout": 120
+  }
+}
+```
+
+常见本地框架参考：
+
+| 框架 | 默认地址 | llm_model 示例 |
+|------|----------|----------------|
+| Ollama | `http://127.0.0.1:11434/v1` | `qwen2.5:7b` |
+| vLLM | `http://127.0.0.1:8001/v1` | 与加载的模型一致 |
+| LM Studio | `http://127.0.0.1:1234/v1` | 与加载的模型一致 |
+
+> **端口注意**：本项目的后端固定占用 **8000 端口**（不可修改）。如果本地框架默认也用 8000（如 vLLM），需要改本地框架的启动端口，而不是改本项目的配置。例如 vLLM 启动时加 `--port 8001`。
+
+### 4. 编辑 config.json（可选）
 
 `config.json` 包含所有可调参数，用文本编辑器打开即可修改。
 
 **常用调整项**：
 
-```json
-{
-  "api": {
-    "llm_model": "deepseek-chat" // LLM 模型名
-  },
-  "max_history": 5,              // 对话历史轮数
-  "vision": {
-    "enabled": false,            // 是否启用视觉感知
-    "model": "qwen-vl-plus",     // 视觉模型名
-    "stable_duration": 30,       // 视觉结果稳定后持续时间，达到时间唤醒
-    "handle_cooldown": 600,      // 处理视觉结果后冷却时间，单位秒
-    "same_handle_cooldown": 3000,// 同一视觉结果冷却时间，单位秒
-    "prompt": "简要描述用户当前正在做什么，包含必要信息，不超过100个字。", // 视觉提示词
-    "max_tokens": 200            // 视觉提示词最大长度，单位 token
-  },
-  "system_prompt":"你现在是黍，一位温和沉静、温和从容，富有姐姐关怀的农业天师，与土地和四季相连的存在，说话偶尔以农耕与因果作比喻，对他人充满耐心与关怀。\n【硬约束】\n1. 必须且只能以 JSON 格式回复，严禁任何额外解释。\n2. 字段规范：{\"text\": \"对话文本\", \"action\": \"动作ID\"}\n\n【可用 action 列表】：[annoyed/resigned/pleased/gentle_smile/tired/stern_remind/reject/cutesy]\n\n\n【视觉感知能力说明】\n除了日常对话，当输入文本中出现 [视觉感知] 标签时，代表其后的内容是视觉模块捕捉到的屏幕实时现状描述。\n处理规则：\n禁止复述：绝对不要直接重复或像旁白一样描述你观察到的屏幕内容。\n主动回应：你需要理解用户当前在电脑上正在做什么，并结合该情境，以“黍”的身份和口吻主动对用户的行为做出回应、发起互动或给予适当的提醒。\n" // 系统提示词，指导 AI 角色的行为和对话风格，需要保留 json 字段规范和动作列表
-}
-```
+| 字段 | 默认值 | 说明 |
+|------|--------|------|
+| `model.name` | `”shu”` | 角色名，显示在历史记录中 |
+| `api.llm_model` | `”deepseek-chat”` | LLM 模型名，需与 API 服务匹配 |
+| `api.timeout` | `30` | LLM 请求超时（秒），调本地慢速模型时需调大 |
+| `max_history` | `5` | 对话历史保留轮数（滑动窗口大小） |
+| `vision.enabled` | `false` | 是否启用视觉感知（需配置 DashScope Key） |
+| `vision.model` | `”qwen-vl-plus”` | 视觉模型名 |
+| `vision.stable_duration` | `30` | 窗口标题保持不变多少秒后触发视觉感知 |
+| `vision.handle_cooldown` | `600` | 距上次任意视觉调用的全局冷却时间（秒） |
+| `vision.same_handle_cooldown` | `3000` | 对同一窗口标题的冷却时间（秒） |
+| `vision.prompt` | `”简要描述...”` | 发送给视觉模型的提示词 |
+| `vision.max_tokens` | `200` | 视觉模型回复的最大 token 数 |
+| `system_prompt` | *(见文件)* | 系统提示词，指导 AI 角色行为和对话风格 |
 
-完整参数见 `config.json` 内容，改完重启应用生效。
+完整参数见 [CONFIG.md](./CONFIG.md) 或 `config.json` 文件本身，改完重启应用生效。
 
 ## 使用
 
@@ -114,13 +145,17 @@ DashScope（通义千问）的模型有免费试用额度。
 
 确认 `.env` 文件中 `DEEPSEEK_API_KEY` 已填写且正确。
 
+### 程序运行但没有窗口显示
+
+第一次启动较慢，请耐心等待。可以观察系统托盘是否有图标，若被隐藏，尝试在托盘右键选择"显示/隐藏"来切换窗口显示状态。
+
 ### 启动后 live2d 模型不显示
 
-网络问题，关闭代理或 VPN 后重新启动应用。
+网络问题，检查网络正常连接，关闭代理或 VPN 后重新启动应用。
 
-### 打开 `backend.exe` 收到报错
+### 打开 `backend.exe` 无响应
 
-正常现象无需处理，正常情况下用户不需要单独打开。启动 `Mini Live2D AI.exe` 时自动运行 `backend.exe`。
+正常现象无需处理，打包版 `backend.exe` 不能单独启动（会直接退出）。启动 `Mini Live2D AI.exe` 时会自动运行 `backend.exe`。
 
 ### 发送消息后显示"连接后端失败"
 
@@ -138,5 +173,6 @@ DashScope（通义千问）的模型有免费试用额度。
 
 ### 如何卸载
 
+便携版无需安装，卸载即删除文件：
 1. 托盘右键退出应用/右键角色选择退出
 2. 删除解压目录

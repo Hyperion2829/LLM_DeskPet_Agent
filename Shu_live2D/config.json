@@ -20,7 +20,8 @@
 
   "api": {
     "backend_url": "http://127.0.0.1:8000",
-    "llm_model": "deepseek-v4-pro"
+    "llm_model": "deepseek-chat",
+    "timeout": 30
   },
 
   "actions": ["annoyed", "resigned", "pleased", "gentle_smile", "tired", "stern_remind", "reject", "cutesy"],
@@ -28,8 +29,8 @@
   "max_history": 5,
 
   "vision": {
-    "enabled": true,
-    "model": "qwen3.6-plus",
+    "enabled": false,
+    "model": "qwen-vl-plus",
     "poll_interval": 5,
     "stable_duration": 30,
     "handle_cooldown": 600,

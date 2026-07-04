@@ -13,6 +13,8 @@
 
 详见 [INSTALL.md](./INSTALL.md)（安装与配置指南）。
 
+配置参数说明见 [CONFIG.md](./CONFIG.md)。
+
 开发者请参阅 [DEVELOPMENT.md](./DEVELOPMENT.md)。
 
 ## 技术栈
@@ -78,8 +80,6 @@ testvtuber/
 ├── INSTALL.md
 └── DEVELOPMENT.md
 ```
-
-## License
 
 ## License
 

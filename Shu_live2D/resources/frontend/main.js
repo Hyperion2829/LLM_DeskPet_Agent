@@ -23,6 +23,7 @@ let baseModelScale = 1;
 let resetTimer = null;          // 动作播放 5 秒后自动复位表情的定时器
 let bubbleTimeout = 5000;
 let charDelay = 40;
+let chatTimeout = 30000;
 let backendUrl = "http://127.0.0.1:8000";
 let bubbleCount = 0;
 let mouseIgnoreActive = false;
@@ -49,6 +50,7 @@ function initLayout(config) {
     const d = config.display;
     bubbleTimeout = d.bubble_timeout || 5000;
     charDelay = d.char_delay || 40;
+    chatTimeout = (config.api.timeout || 30) * 1000;
     backendUrl = config.api.backend_url;
 
     appEl.style.setProperty("--base-w", d.window_width + "px");
@@ -188,7 +190,7 @@ async function sendMessage() {
     sendBtn.disabled = true;
 
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 30000);
+    const timeoutId = setTimeout(() => controller.abort(), chatTimeout);
 
     try {
         const res = await fetch(`${backendUrl}/chat`, {
