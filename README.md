@@ -94,34 +94,60 @@ LLM-DeskPet-Shu/
 
 ---
 
-## 🛠️ 部署指南 (本地 8G 显存 Windows 电脑)
+## 🚀 快速开始与使用指南
 
-### 第一步：克隆仓库与本地环境搭建
-1.  克隆本项目仓库（只含轻量代码，不含 14G 模型）：
-    ```bash
-    git clone https://github.com/Hyperion2829/LLM_DeskPet_Agent.git
-    cd LLM_DeskPet_Agent
-    ```
-2.  点击 Windows 的开始菜单，搜索并打开 **`Anaconda Prompt`** [2]。
-3.  `cd` 切换到你本地的项目根目录下，直接执行：
-    ```cmd
-    # 运行本地一键环境配置脚本
-    setup_local\setup_local.bat
-    ```
-    *脚本会利用 `conda run` 机制，自动为你一键配置好 Python 3.11 虚拟环境并通过国内镜像源装齐所有依赖。*
+本项目为不同需求的使用者提供两条部署路径。**如果你只是想快速体验或进行答辩演示，推荐使用【路径 A】。**
 
-### 第二步：本地底座模型高速下载
-在同一个 **Anaconda Prompt** 窗口中，直接输入 [2]：
+---
+
+### 【路径 A】极速体验（推荐 🌟，无需配置 Python 环境，0 显存，调用云端）
+
+*适合只想运行桌宠进行体验、或者评审老师快速验收。该路径下，模型大脑运行在云端 API（如官方 DeepSeek），无需本地显卡。*
+
+1. **一键下载**：前往本仓库的 [Releases](https://github.com/Hyperion2829/LLM_DeskPet_Agent/releases) 页面，下载 **`Mini_Live2D_AI_v1.0.0.zip`** 并解压。
+2. **配置 Key**：在解压出的文件夹中，将 `.env.template` 复制一份改名为 `.env`，填入你真实的 `DEEPSEEK_API_KEY`（如需视觉，再填入 `DASHSCOPE_API_KEY`） [2]。
+3. **启动**：双击运行 **`Mini Live2D AI.exe`**，即可直接开始在桌面与黍对话 [1.1.6]！
+*(注：此路径不需要 git clone 本仓库，也无需配置任何 Python 环境)*。
+
+---
+
+### 【路径 B】源码部署与二次开发（本地 8G 显存运行，调用本地大模型）
+
+*适合开发者、助教进行源码审核与复现。大模型大脑完全运行在本地显卡上。*
+
+#### 1. 克隆代码仓库
+```bash
+git clone https://github.com/Hyperion2829/LLM_DeskPet_Agent.git
+cd LLM_DeskPet_Agent
+```
+*(此时你本地拥有了完整的训练、评测源码，以及前端的 JS/HTML 源码，但 `Shu_live2D` 目录下缺少编译好的 `.exe` 启动程序。)*
+
+#### 2. 补齐本地可执行程序 (Binaries)
+1. 前往本仓库的 [Releases](https://github.com/Hyperion2829/LLM_DeskPet_Agent/releases) 页面。
+2. 下载 **`Mini_Live2D_AI_v1.0.0.zip`** 并解压。
+3. **关键操作**：将解压出来的 `Mini Live2D AI.exe`、`backend.exe` 及其所有的 `.dll` 动态链接库文件，**直接复制并粘贴到你刚刚 clone 下来的 `Shu_live2D/` 文件夹下**。
+*(这样，你克隆的代码仓库与可执行程序就完美融为了一体，没有产生任何多余的重复文件夹)*。
+
+#### 3. 配置本地 Python 运行环境
+在项目根目录下打开 **Anaconda Prompt**，依次运行：
 ```cmd
+# 一键配置依赖环境 (conda 环境名为 pet_local)
+setup_local\setup_local.bat
+
+# 一键下载 14G Qwen2.5 官方底座
 python setup_local/download_local.py
 ```
-这会利用你本地电脑的宽带，通过国内魔搭（ModelScope）的高速节点 [1.1.6]，自动将 14G 的原模型拉到你本地的 `models/base/Qwen2.5-7B-Instruct` 目录下 [1.1.6]。
 
-### 第三步：获取并解压 LoRA 补丁与客户端
-1. 前往本仓库的 [Releases](https://github.com/Hyperion2829/LLM_DeskPet_Agent/releases) 页面。
-2. 下载免安装客户端 `Mini_Live2D_AI_v1.0.0.zip` 并解压。
-3. 下载微调补丁 `shu_lora_adapter.zip` 并解压。
-4. 将解压出的 `shu_lora` 补丁文件夹放置到本地电脑项目根目录的 `models/checkpoints/` 路径下。
+#### 4. 导入 LoRA 补丁（黍之灵魂）
+1. 从 Releases 页面下载你打包好的微调补丁 **`shu_lora_adapter.zip`**。
+2. 解压并将其中的 `shu_lora` 文件夹放置到本地 `models/checkpoints/` 目录下。
+
+#### 5. 双击一键启动
+1. 双击运行项目根目录下的 **`run_local.bat`**（在 18080 端口载入 4-bit 模型并提供服务） [1.1.4, 1.2.8]。
+2. 配置好 `Shu_live2D/.env` 文件（指向本地 `18080` 端口） [1.1.2]。
+3. 双击运行 `Shu_live2D/Mini Live2D AI.exe` [1.1.6]。
+```
+
 
 ---
 
