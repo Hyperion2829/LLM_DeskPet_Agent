@@ -146,7 +146,6 @@ python setup_local/download_local.py
 1. 双击运行项目根目录下的 **`run_local.bat`**（在 18080 端口载入 4-bit 模型并提供服务） [1.1.4, 1.2.8]。
 2. 配置好 `Shu_live2D/.env` 文件（指向本地 `18080` 端口） [1.1.2]。
 3. 双击运行 `Shu_live2D/Mini Live2D AI.exe` [1.1.6]。
-```
 
 
 ---
